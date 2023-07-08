@@ -1,0 +1,26 @@
+Body {
+  background-color: lightblue;
+  display: flex;
+  align-items: center;
+}
+
+section img {
+width: 250px;
+max-height: 15rem;
+display: inline;
+justify-content: space-between;
+border: 2px solid black;
+align-items: center;
+}
+
+div {
+  font-size: 30px;
+  font-weight: bold;
+  padding-top: 20px;
+  align-items: center;
+}
+ #siteLogo {
+border: 2px solid black;
+width: 300px;
+
+ }
