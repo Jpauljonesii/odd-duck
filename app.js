@@ -3,14 +3,15 @@
 let productContainer = document.querySelector('section');
 let resultButton = document.querySelector('section + div');
 let image1 = document.querySelector('section img:first-child');
-let image2 = document.querySelector('section img:nth-child');
-let image3 = document.querySelector('section img:last-child');
+let image2 = document.querySelector('section img:nth-child(2)');
+let image3 = document.querySelector('section img:last-child(3)');
 
 let clicks = 0;
 let maxClicksAllowed = 25;
 
 const state = {
-  allProductsArray: []
+  allProductsArray: [],
+  /*indexArray:[]*/
 };
 
 
@@ -25,34 +26,37 @@ function getRandomNumber() {
   return Math.floor(Math.random() * state.allProductsArray.length);
 }
 
-function renderProducs() {
-let product1 = getRandomNumber();
-let product2 = getRandomNumber();
-let product3 = getRandomNumber();
-while (product1 === product2 || product2 === product3 || product3 === product1) {
-  product2 = getRandomNumber();
-} else if (product1 === product3){
-  product3 = getRandomNumber();
-}
 
-}
-console.log(product1, product2, product3);
+function renderProducts() {
+  let product1 = getRandomNumber();
+  let product2 = getRandomNumber();
+  let product3 = getRandomNumber();
+  while (product1 === product2 || product2 === product3 || product1 === product3) {
+    if (product1 === product2 || product2 === product3) {
+      product2 = getRandomNumber();
+    } else if (product1 === product3) {
+      product3 = getRandomNumber();
+    }
 
-image1.src = state.allProductsArray[product1].src;
-image2.src = state.allProductsArray[product2].src;
-image3.src = state.allProductsArray[product3].src;
-image1.alt = state.allProductsArray[product1].name;
-image2.alt = state.allProductsArray[product2].name;
-image3.alt = state.allProductsArray[product3].name;
-state.allProductsArray[product1].views++;
-state.allProductsArray[product2].views++;
-state.allProductsArray[product3].views++;
+  }
+  console.log(product1, product2, product3);
+
+  image1.src = state.allProductsArray[product1].src;
+  image2.src = state.allProductsArray[product2].src;
+  image3.src = state.allProductsArray[product3].src;
+  image1.alt = state.allProductsArray[product1].name;
+  image2.alt = state.allProductsArray[product2].name;
+  image3.alt = state.allProductsArray[product3].name;
+  state.allProductsArray[product1].views++;
+  state.allProductsArray[product2].views++;
+  state.allProductsArray[product3].views++;
+}
 
 function handleProductClick(event){
-  if (event.target === productContainer){
+  if (event.target === productContainer) {
     alert('Please click on an image');
   }
-  clicks++
+  clicks++;
 
   let clickProduct = event.target.alt;
   for (let i = 0; i < state.allProductsArray.length; i++) {
@@ -62,19 +66,19 @@ function handleProductClick(event){
     }
   }
   if (clicks === maxClicksAllowed) {
-    productContainer.removeEventListener('click', handleProductClick)
+    productContainer.removeEventListener('click', handleProductClick);
     resultButton.addEventListener('click', renderResults);
-    resultButton.className = 'clicks allowed';
-    productContainer.className = 'no voting';
-} else {
-  renderProducts();
-}
+    resultButton.className = 'clicks-allowed';
+    productContainer.className = 'no-voting';
+  } else {
+    renderProducts();
+  }
 }
 function renderResults () {
   let ul = document.querySelector('ul');
   for (let i = 0; i < state.allProductsArray.length; i++){
     let li = document.createElement('li');
-    li.textContent = ${state.allProductsArray[i].name} had ${state.allProductsArray[i].name} was click ${state.allProductsArray[i].click} times. ;
+    li.textContent = `${state.allProductsArray[i].name} had ${state.allProductsArray[i].views} views and was clicked ${state.allProductsArray[i].click} times.`;
     ul.appendChild(li);
   }
 }
@@ -97,10 +101,11 @@ let sweep = new Product ('sweep', 'img/swee.jpg');
 let tauntaun = new Product ('tauntaun', 'img/tauntaun.jpg');
 let unicorn = new Product ('unicorn', 'img/unicorn.jpg');
 let watercan = new Product ('water-can', 'img/water-can.jpg');
-let wineglass = new Product ('wine-glass', 'img/wine-glass.jpg');
+let wineglass = new Product ('wine-glass', 'img/wineglass');
 
-state.allProductsArray.push
+state.allProductsArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogduck, dragon, pen, petsweep, scissors, shark, sweep, tauntaun, unicorn, watercan, wineglass);
 
 renderProducts();
 
 productContainer.addEventListener('click', handleProductClick);
+
