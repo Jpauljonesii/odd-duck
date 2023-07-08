@@ -4,7 +4,7 @@ let productContainer = document.querySelector('section');
 let resultButton = document.querySelector('section + div');
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
-let image3 = document.querySelector('section img:last-child(3)');
+let image3 = document.querySelector('section img:last-child');
 
 let clicks = 0;
 let maxClicksAllowed = 25;
@@ -19,7 +19,7 @@ function Product(name, src) {
   this.name = name;
   this.src = src;
   this.views = 0;
-  this.click = 0;
+  this.clicks = 0;
 }
 
 function getRandomNumber() {
@@ -61,7 +61,7 @@ function handleProductClick(event){
   let clickProduct = event.target.alt;
   for (let i = 0; i < state.allProductsArray.length; i++) {
     if (clickProduct === state.allProductsArray[i].name) {
-      state.allProductsArray[i].click++;
+      state.allProductsArray[i].clicks++;
       break;
     }
   }
@@ -77,14 +77,15 @@ function handleProductClick(event){
 function renderResults () {
   let ul = document.querySelector('ul');
   for (let i = 0; i < state.allProductsArray.length; i++){
+    console.log('test');
     let li = document.createElement('li');
-    li.textContent = `${state.allProductsArray[i].name} had ${state.allProductsArray[i].views} views and was clicked ${state.allProductsArray[i].click} times.`;
+    li.textContent = `${state.allProductsArray[i].name} had ${state.allProductsArray[i].views} views and was clicked ${state.allProductsArray[i].clicks} times.`;
     ul.appendChild(li);
   }
 }
 
 let bag = new Product ('bag', 'img/bag.jpg');
-let banana = new Product ('banana', 'img/banana.job');
+let banana = new Product ('banana', 'img/banana.jpg');
 let bathroom = new Product ('bathroom', 'img/bathroom.jpg');
 let boots = new Product ('boots', 'img/boots.jpg');
 let breakfast = new Product ('breakfast', 'img/breakfast.jpg');
@@ -97,11 +98,11 @@ let pen = new Product ('pen', 'img/pen.jpg');
 let petsweep = new Product ('pet-sweep', 'img/pet-sweep.jpg');
 let scissors = new Product ('scissors', 'img/scissors.jpg');
 let shark = new Product ('shark', 'img/shark.jpg' );
-let sweep = new Product ('sweep', 'img/swee.jpg');
+let sweep = new Product ('sweep', 'img/sweep.png');
 let tauntaun = new Product ('tauntaun', 'img/tauntaun.jpg');
 let unicorn = new Product ('unicorn', 'img/unicorn.jpg');
 let watercan = new Product ('water-can', 'img/water-can.jpg');
-let wineglass = new Product ('wine-glass', 'img/wineglass');
+let wineglass = new Product ('wine-glass', 'img/wine-glass.jpg');
 
 state.allProductsArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogduck, dragon, pen, petsweep, scissors, shark, sweep, tauntaun, unicorn, watercan, wineglass);
 
