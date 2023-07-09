@@ -1,17 +1,18 @@
 'use strict';
 
 let productContainer = document.querySelector('section');
-let resultButton = document.querySelector('section + div');
+/*let resultButton = document.querySelector('section + div');*/
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
 let image3 = document.querySelector('section img:last-child');
 
 let clicks = 0;
 let maxClicksAllowed = 25;
+let uniqueImageCount = 6;
 
 const state = {
   allProductsArray: [],
-  /*indexArray:[]*/
+  indexArray:[],
 };
 
 
@@ -28,17 +29,16 @@ function getRandomNumber() {
 
 
 function renderProducts() {
-  let product1 = getRandomNumber();
-  let product2 = getRandomNumber();
-  let product3 = getRandomNumber();
-  while (product1 === product2 || product2 === product3 || product1 === product3) {
-    if (product1 === product2 || product2 === product3) {
-      product2 = getRandomNumber();
-    } else if (product1 === product3) {
-      product3 = getRandomNumber();
+  while (state.indexArray.length < uniqueImageCount) {
+    let randomNumber = getRandomNumber();
+    if (!state.indexArray.includes(randomNumber)) {
+      state.indexArray.push(randomNumber);
     }
-
   }
+  let product1 = state.indexArray.shift();
+  let product2 = state.indexArray.shift();
+  let product3 = state.indexArray.shift();
+
   console.log(product1, product2, product3);
 
   image1.src = state.allProductsArray[product1].src;
@@ -67,14 +67,62 @@ function handleProductClick(event){
   }
   if (clicks === maxClicksAllowed) {
     productContainer.removeEventListener('click', handleProductClick);
-    resultButton.addEventListener('click', renderResults);
+    renderChart();
+    /*resultButton.addEventListener('click', renderResults);
     resultButton.className = 'clicks-allowed';
-    productContainer.className = 'no-voting';
+    productContainer.className = 'no-voting';*/
   } else {
     renderProducts();
   }
 }
-function renderResults () {
+function renderChart() {
+  let productName = [];
+  let productClick = [];
+  let productView = [];
+
+  for (let i = 0; i < state.allProductsArray.length; i++) {
+    productName.push(state.allProductsArray[i].name);
+    productClick.push(state.allProductsArray[i].clicks);
+    productView.push(state.allProductsArray[i].views);
+  }
+
+  const chartData = {
+    labels: productName,
+    datasets: [
+      {
+        label: 'Views',
+        data: productView,
+        backgroundColor: ['green'],
+        borderColor: ['black)'],
+        borderWidth: 1,
+      },
+      {
+        label: 'Click(s)',
+        data: productClick,
+        backgroundColor: ['blue'],
+        borderColor: ['rgb(black)'],
+        borderWidth: 1,
+      },
+    ],
+  };
+  const config = {
+    type: 'bar',
+    data: chartData,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+  let chartCanvas = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(chartCanvas, config);
+}
+
+
+
+/*function renderResults () {
   let ul = document.querySelector('ul');
   for (let i = 0; i < state.allProductsArray.length; i++){
     console.log('test');
@@ -82,7 +130,7 @@ function renderResults () {
     li.textContent = `${state.allProductsArray[i].name} had ${state.allProductsArray[i].views} views and was clicked ${state.allProductsArray[i].clicks} times.`;
     ul.appendChild(li);
   }
-}
+}*/
 
 let bag = new Product ('bag', 'img/bag.jpg');
 let banana = new Product ('banana', 'img/banana.jpg');
