@@ -6,6 +6,35 @@ let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
 let image3 = document.querySelector('section img:last-child');
 
+/*const context = document.getElementById('myChart').getContext('2d');
+const dataSet = JSON.parse(localStorage.chartData);
+const itemNames = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogduck, dragon, pen, petsweep, scissors, shark, sweep, tauntaun, unicorn, watercan, wineglass];
+const chartColors = [green, black, blue];
+*/
+
+/*const myChart = new Chart (context, {
+  type: 'bar',
+  data:{
+    labels: itemNames,
+    datasets: [{
+      label: '# of Votes',
+      data: dataSet,
+      backgroundColor: chartColors
+    }]
+  },
+  options: {
+    scales:{
+      yAxes:[{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+});
+*/
+
+
 let clicks = 0;
 let maxClicksAllowed = 25;
 let uniqueImageCount = 6;
@@ -38,7 +67,6 @@ function renderProducts() {
   let product1 = state.indexArray.shift();
   let product2 = state.indexArray.shift();
   let product3 = state.indexArray.shift();
-
   console.log(product1, product2, product3);
 
   image1.src = state.allProductsArray[product1].src;
@@ -71,6 +99,9 @@ function handleProductClick(event){
     /*resultButton.addEventListener('click', renderResults);
     resultButton.className = 'clicks-allowed';
     productContainer.className = 'no-voting';*/
+
+    let stringifiedProd = JSON.stringify(state.allProductsArray);
+    localStorage.setItem('myProd', stringifiedProd);
   } else {
     renderProducts();
   }
@@ -119,7 +150,19 @@ function renderChart() {
   let chartCanvas = document.getElementById('myChart').getContext('2d');
   const myChart = new Chart(chartCanvas, config);
 }
+let retrievedProdArray = localStorage.getItem('state.allProdArray');
+let parsedProdArray = JSON.parse(retrievedProdArray);
 
+/*function saveStatsToLocalStorage(dataSet){
+  const chartData = [];
+  for(let i = 0; i < dataSet.length; i++){
+    chartData.push(dataSet[i]);
+  }
+  console.log(typeof chartData, chartData);
+  localStorage.chartData = JSON.stringify(chartData);
+  console.log(typeof localStorage.chartData);
+}
+saveStatsToLocalStorage();*/
 
 
 /*function renderResults () {
