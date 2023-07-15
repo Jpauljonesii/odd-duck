@@ -34,16 +34,14 @@ const chartColors = [green, black, blue];
 });
 */
 
-
 let clicks = 0;
 let maxClicksAllowed = 25;
 let uniqueImageCount = 6;
 
 const state = {
   allProductsArray: [],
-  indexArray:[],
+  indexArray: [],
 };
-
 
 function Product(name, src) {
   this.name = name;
@@ -55,7 +53,6 @@ function Product(name, src) {
 function getRandomNumber() {
   return Math.floor(Math.random() * state.allProductsArray.length);
 }
-
 
 function renderProducts() {
   while (state.indexArray.length < uniqueImageCount) {
@@ -75,12 +72,21 @@ function renderProducts() {
   image1.alt = state.allProductsArray[product1].name;
   image2.alt = state.allProductsArray[product2].name;
   image3.alt = state.allProductsArray[product3].name;
-  state.allProductsArray[product1].views++;
-  state.allProductsArray[product2].views++;
-  state.allProductsArray[product3].views++;
+  let localInfo = JSON.parse(localStorage.getItem('myProd'));
+  if (localInfo) {
+    localInfo[product1].views++;
+    localInfo[product2].views++;
+    localInfo[product3].views++;
+    localStorage.setItem('myProd', JSON.stringify(localInfo));
+  } else {
+    state.allProductsArray[product1].views++;
+    state.allProductsArray[product2].views++;
+    state.allProductsArray[product3].views++;
+  }
 }
 
-function handleProductClick(event){
+function handleProductClick(event) {
+  let localInfo = JSON.parse(localStorage.getItem('myProd'));
   if (event.target === productContainer) {
     alert('Please click on an image');
   }
@@ -89,19 +95,28 @@ function handleProductClick(event){
   let clickProduct = event.target.alt;
   for (let i = 0; i < state.allProductsArray.length; i++) {
     if (clickProduct === state.allProductsArray[i].name) {
+      if (localInfo) {
+        localInfo[i].clicks++;
+        localStorage.setItem('myProd', JSON.stringify(localInfo));
+        //break;
+      }
+
       state.allProductsArray[i].clicks++;
       break;
     }
   }
   if (clicks === maxClicksAllowed) {
     productContainer.removeEventListener('click', handleProductClick);
-    renderChart();
     /*resultButton.addEventListener('click', renderResults);
     resultButton.className = 'clicks-allowed';
     productContainer.className = 'no-voting';*/
-
-    let stringifiedProd = JSON.stringify(state.allProductsArray);
-    localStorage.setItem('myProd', stringifiedProd);
+    if (!localInfo) {
+      let stringifiedProd = JSON.stringify(state.allProductsArray);
+      localStorage.setItem('myProd', stringifiedProd);
+    }
+    //let stringifiedProd = JSON.stringify(state.allProductsArray);
+    renderChart();
+    //localStorage.setItem('myProd', stringifiedProd);
   } else {
     renderProducts();
   }
@@ -110,11 +125,11 @@ function renderChart() {
   let productName = [];
   let productClick = [];
   let productView = [];
-
-  for (let i = 0; i < state.allProductsArray.length; i++) {
-    productName.push(state.allProductsArray[i].name);
-    productClick.push(state.allProductsArray[i].clicks);
-    productView.push(state.allProductsArray[i].views);
+  let localInfo = JSON.parse(localStorage.getItem('myProd'));
+  for (let i = 0; i < localInfo.length; i++) {
+    productName.push(localInfo[i].name);
+    productClick.push(localInfo[i].clicks);
+    productView.push(localInfo[i].views);
   }
 
   const chartData = {
@@ -164,7 +179,6 @@ let parsedProdArray = JSON.parse(retrievedProdArray);
 }
 saveStatsToLocalStorage();*/
 
-
 /*function renderResults () {
   let ul = document.querySelector('ul');
   for (let i = 0; i < state.allProductsArray.length; i++){
@@ -175,29 +189,48 @@ saveStatsToLocalStorage();*/
   }
 }*/
 
-let bag = new Product ('bag', 'img/bag.jpg');
-let banana = new Product ('banana', 'img/banana.jpg');
-let bathroom = new Product ('bathroom', 'img/bathroom.jpg');
-let boots = new Product ('boots', 'img/boots.jpg');
-let breakfast = new Product ('breakfast', 'img/breakfast.jpg');
-let bubblegum = new Product ('bubblegum', 'img/bubblegum.jpg');
-let chair = new Product ('chair', 'img/chair.jpg');
-let cthulhu = new Product ('cthulhu', 'img/cthulhu.jpg');
-let dogduck = new Product ('dog-duck', 'img/dog-duck.jpg');
-let dragon = new Product ('dragon', 'img/dragon.jpg');
-let pen = new Product ('pen', 'img/pen.jpg');
-let petsweep = new Product ('pet-sweep', 'img/pet-sweep.jpg');
-let scissors = new Product ('scissors', 'img/scissors.jpg');
-let shark = new Product ('shark', 'img/shark.jpg' );
-let sweep = new Product ('sweep', 'img/sweep.png');
-let tauntaun = new Product ('tauntaun', 'img/tauntaun.jpg');
-let unicorn = new Product ('unicorn', 'img/unicorn.jpg');
-let watercan = new Product ('water-can', 'img/water-can.jpg');
-let wineglass = new Product ('wine-glass', 'img/wine-glass.jpg');
+let bag = new Product('bag', 'img/bag.jpg');
+let banana = new Product('banana', 'img/banana.jpg');
+let bathroom = new Product('bathroom', 'img/bathroom.jpg');
+let boots = new Product('boots', 'img/boots.jpg');
+let breakfast = new Product('breakfast', 'img/breakfast.jpg');
+let bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
+let chair = new Product('chair', 'img/chair.jpg');
+let cthulhu = new Product('cthulhu', 'img/cthulhu.jpg');
+let dogduck = new Product('dog-duck', 'img/dog-duck.jpg');
+let dragon = new Product('dragon', 'img/dragon.jpg');
+let pen = new Product('pen', 'img/pen.jpg');
+let petsweep = new Product('pet-sweep', 'img/pet-sweep.jpg');
+let scissors = new Product('scissors', 'img/scissors.jpg');
+let shark = new Product('shark', 'img/shark.jpg');
+let sweep = new Product('sweep', 'img/sweep.png');
+let tauntaun = new Product('tauntaun', 'img/tauntaun.jpg');
+let unicorn = new Product('unicorn', 'img/unicorn.jpg');
+let watercan = new Product('water-can', 'img/water-can.jpg');
+let wineglass = new Product('wine-glass', 'img/wine-glass.jpg');
 
-state.allProductsArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogduck, dragon, pen, petsweep, scissors, shark, sweep, tauntaun, unicorn, watercan, wineglass);
+state.allProductsArray.push(
+  bag,
+  banana,
+  bathroom,
+  boots,
+  breakfast,
+  bubblegum,
+  chair,
+  cthulhu,
+  dogduck,
+  dragon,
+  pen,
+  petsweep,
+  scissors,
+  shark,
+  sweep,
+  tauntaun,
+  unicorn,
+  watercan,
+  wineglass
+);
 
 renderProducts();
 
 productContainer.addEventListener('click', handleProductClick);
-
