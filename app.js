@@ -43,6 +43,7 @@ const state = {
   indexArray: [],
 };
 
+
 function Product(name, src) {
   this.name = name;
   this.src = src;
